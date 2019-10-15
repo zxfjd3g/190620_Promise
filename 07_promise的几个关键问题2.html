@@ -18,6 +18,39 @@
         ①如果先指定的回调, 那当状态发生改变时, 回调函数就会调用, 得到数据
         ②如果先改变的状态, 那当指定回调时, 回调函数就会调用, 得到数据
     */
+    // 常规: 先指定回调函数, 后改变的状态
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(1) // 后改变的状态(同时指定数据), 异步执行回调函数
+      }, 1000);
+    }).then(// 先指定回调函数, 保存当前指定的回调函数
+      value => {},
+      reason => {console.log('reason', reason)}
+    )
+
+    // 如何先改状态, 后指定回调函数
+    new Promise((resolve, reject) => {
+      resolve(1) // 先改变的状态(同时指定数据)
+    }).then(// 后指定回调函数, 异步执行回调函数
+      value => {console.log('value2', value)},
+      reason => {console.log('reason2', reason)}
+    )
+
+    const p = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(1) // 后改变的状态(同时指定数据), 异步执行回调函数
+      }, 1000);
+    })
+
+    setTimeout(() => {
+      p.then(
+        value => {console.log('value3', value)},
+        reason => {console.log('reason3', reason)}
+      )
+    }, 1100);
+
+
+    
 
   </script>
 </body>
